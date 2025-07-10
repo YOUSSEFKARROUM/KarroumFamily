@@ -1,0 +1,191 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Table Utilisateurs
+model User {
+  id        String   @id @default(cuid())
+  phone     String   @unique
+  name      String
+  email     String?  @unique
+  address   String?
+  city      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Relations
+  orders    Order[]
+  reviews   Review[]
+  
+  @@map("users")
+}
+
+// Table Catégories
+model Category {
+  id          String    @id @default(cuid())
+  name        String    @unique
+  nameAr      String    @map("name_ar")
+  slug        String    @unique
+  description String?
+  icon        String?   // Emoji ou icon class
+  isActive    Boolean   @default(true)
+  sortOrder   Int       @default(0)
+  
+  // Relations
+  products    Product[]
+  
+  @@map("categories")
+}
+
+// Table Produits
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  nameAr      String   @map("name_ar")
+  slug        String   @unique
+  description String?
+  price       Float
+  oldPrice    Float?   @map("old_price")
+  stock       Int      @default(0)
+  images      String[] // Array d'URLs relatives
+  isActive    Boolean  @default(true)
+  isFeatured  Boolean  @default(false) @map("is_featured")
+  preparationTime Int? @map("preparation_time") // en minutes
+  shelfLife   Int?     @map("shelf_life") // durée de conservation en heures
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  categoryId  String   @map("category_id")
+  category    Category @relation(fields: [categoryId], references: [id])
+  orderItems  OrderItem[]
+  reviews     Review[]
+  
+  @@map("products")
+}
+
+// Table Commandes
+model Order {
+  id              String      @id @default(cuid())
+  orderNumber     String      @unique @map("order_number")
+  customerName    String      @map("customer_name")
+  customerPhone   String      @map("customer_phone")
+  customerEmail   String?     @map("customer_email")
+  deliveryAddress String      @map("delivery_address")
+  city            String
+  notes           String?
+  
+  // Pricing
+  subtotal        Float
+  deliveryFee     Float       @map("delivery_fee")
+  total           Float
+  
+  // Status et timing
+  status          OrderStatus @default(PENDING)
+  paymentStatus   PaymentStatus @default(PENDING) @map("payment_status")
+  deliveryDate    DateTime?   @map("delivery_date")
+  deliveryTime    String?     @map("delivery_time") // "09:00-12:00"
+  
+  // Timestamps
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  
+  // Relations
+  userId          String?     @map("user_id")
+  user            User?       @relation(fields: [userId], references: [id])
+  items           OrderItem[]
+  statusHistory   OrderStatusHistory[]
+  
+  @@map("orders")
+}
+
+// Table Articles de Commande
+model OrderItem {
+  id        String  @id @default(cuid())
+  quantity  Int
+  price     Float   // Prix au moment de la commande
+  
+  // Relations
+  orderId   String  @map("order_id")
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String  @map("product_id")
+  product   Product @relation(fields: [productId], references: [id])
+  
+  @@map("order_items")
+}
+
+// Table Historique des Statuts
+model OrderStatusHistory {
+  id          String      @id @default(cuid())
+  status      OrderStatus
+  notes       String?
+  createdAt   DateTime    @default(now())
+  
+  // Relations
+  orderId     String      @map("order_id")
+  order       Order       @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  
+  @@map("order_status_history")
+}
+
+// Table Zones de Livraison
+model DeliveryZone {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  cities    String[] // Array des villes couvertes
+  price     Float
+  isActive  Boolean  @default(true)
+  minOrder  Float?   @map("min_order") // Commande minimum
+  maxOrder  Float?   @map("max_order") // Commande maximum
+  
+  @@map("delivery_zones")
+}
+
+// Table Avis Clients
+model Review {
+  id        String   @id @default(cuid())
+  rating    Int      // 1-5 étoiles
+  comment   String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  
+  // Relations
+  userId    String   @map("user_id")
+  user      User     @relation(fields: [userId], references: [id])
+  productId String   @map("product_id")
+  product   Product  @relation(fields: [productId], references: [id])
+  
+  @@unique([userId, productId])
+  @@map("reviews")
+}
+
+// Table Configuration Site
+model SiteConfig {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String
+  
+  @@map("site_config")
+}
+
+// Enums
+enum OrderStatus {
+  PENDING     // En attente
+  CONFIRMED   // Confirmée
+  PREPARING   // En préparation
+  READY       // Prête
+  DELIVERING  // En livraison
+  DELIVERED   // Livrée
+  CANCELLED   // Annulée
+}
+
+enum PaymentStatus {
+  PENDING     // En attente
+  PAID        // Payée
+  CANCELLED   // Annulée
+}

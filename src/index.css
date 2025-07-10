@@ -1,0 +1,257 @@
+@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Variables CSS pour les couleurs marocaines */
+:root {
+  --rouge-berbere: #B91C1C;
+  --bleu-majorelle: #1E40AF;
+  --vert-menthe: #059669;
+  --or-safran: #F59E0B;
+  --terre-cuite: #DC2626;
+  --beige-desert: #F3F4F6;
+  --marron-henné: #92400E;
+  --blanc-kasbah: #FEFEFE;
+}
+
+/* Classes utilitaires pour les couleurs */
+.text-rouge-berbere { color: var(--rouge-berbere); }
+.text-bleu-majorelle { color: var(--bleu-majorelle); }
+.text-vert-menthe { color: var(--vert-menthe); }
+.text-or-safran { color: var(--or-safran); }
+.text-terre-cuite { color: var(--terre-cuite); }
+.text-beige-desert { color: var(--beige-desert); }
+.text-marron-henné { color: var(--marron-henné); }
+.text-blanc-kasbah { color: var(--blanc-kasbah); }
+
+.bg-rouge-berbere { background-color: var(--rouge-berbere); }
+.bg-bleu-majorelle { background-color: var(--bleu-majorelle); }
+.bg-vert-menthe { background-color: var(--vert-menthe); }
+.bg-or-safran { background-color: var(--or-safran); }
+.bg-terre-cuite { background-color: var(--terre-cuite); }
+.bg-beige-desert { background-color: var(--beige-desert); }
+.bg-marron-henné { background-color: var(--marron-henné); }
+.bg-blanc-kasbah { background-color: var(--blanc-kasbah); }
+
+.border-rouge-berbere { border-color: var(--rouge-berbere); }
+.border-bleu-majorelle { border-color: var(--bleu-majorelle); }
+.border-vert-menthe { border-color: var(--vert-menthe); }
+.border-or-safran { border-color: var(--or-safran); }
+
+/* Typographie marocaine */
+.font-amiri { font-family: 'Amiri', serif; }
+.font-playfair { font-family: 'Playfair Display', serif; }
+.font-inter { font-family: 'Inter', sans-serif; }
+
+/* Motifs marocains */
+.zellige-pattern {
+  background: transparent;
+}
+
+.moroccan-border {
+  border: 3px solid var(--rouge-berbere);
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(185, 28, 28, 0.2);
+  transition: all 0.3s ease;
+}
+
+.moroccan-border:hover {
+  box-shadow: 0 0 30px rgba(185, 28, 28, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Animations créatives */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes float-delayed {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float-delayed 8s ease-in-out infinite 2s;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out;
+}
+
+/* Effet de chargement style henné */
+@keyframes henna-draw {
+  0% { stroke-dashoffset: 100; }
+  100% { stroke-dashoffset: 0; }
+}
+
+.animate-henna-draw {
+  animation: henna-draw 2s ease-in-out infinite;
+}
+
+/* Styles pour les cartes produits */
+.product-card {
+  transition: all 0.3s ease;
+  background: var(--blanc-kasbah);
+}
+
+.product-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Badge panier */
+.cart-badge {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Responsivité pour texte arabe */
+@media (max-width: 768px) {
+  .font-amiri {
+    font-size: 0.9em;
+    line-height: 1.6;
+  }
+  
+  .hero-moroccan {
+    padding: 60px 20px;
+  }
+  
+  .hero-moroccan h2 {
+    font-size: 2.5rem;
+  }
+  
+  .hero-moroccan h3 {
+    font-size: 1.5rem;
+  }
+}
+
+/* Effet de survol pour les boutons */
+button:hover {
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* Styles pour les animations de micro-interactions */
+.hover-lift {
+  transition: transform 0.2s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+}
+
+/* Animations pour les recommandations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Effet de brillance pour les badges */
+@keyframes shine {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.shine-effect::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  animation: shine 2s infinite;
+}
+
+/* Amélioration des transitions pour le panier */
+.cart-item-enter {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+.cart-item-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: all 0.3s ease;
+}
+
+.cart-item-exit {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.cart-item-exit-active {
+  opacity: 0;
+  transform: translateX(-100%);
+  transition: all 0.3s ease;
+}
+
+/* Amélioration des contrastes pour l'accessibilité */
+.text-contrast {
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Scrollbar personnalisée */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--beige-desert);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--rouge-berbere);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--terre-cuite);
+}
+
+/* Styles pour les animations de texte */
+.text-gradient {
+  background: linear-gradient(135deg, var(--rouge-berbere), var(--bleu-majorelle));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Utilitaires pour les espacements */
+.spacing-moroccan {
+  margin: 1.5rem 0;
+}
+
+/* Styles pour les éléments interactifs */
+.interactive-element {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.interactive-element:hover {
+  transform: scale(1.05);
+}
